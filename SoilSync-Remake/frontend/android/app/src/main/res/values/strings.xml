@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">SoilSync</string>
-    <string name="title_activity_main">SoilSync</string>
-    <string name="package_name">com.tedabyte.soilsync.usb</string>
-    <string name="custom_url_scheme">com.tedabyte.soilsync.usb</string>
-</resources>

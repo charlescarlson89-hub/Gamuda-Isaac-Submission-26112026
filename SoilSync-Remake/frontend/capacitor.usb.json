@@ -1,8 +1,0 @@
-{
-  "appId": "com.tedabyte.soilsync.usb",
-  "appName": "SoilSync",
-  "webDir": "dist",
-  "loggingBehavior": "none",
-  "server": { "url": "http://127.0.0.1:5173", "cleartext": true },
-  "android": { "allowMixedContent": false }
-}
