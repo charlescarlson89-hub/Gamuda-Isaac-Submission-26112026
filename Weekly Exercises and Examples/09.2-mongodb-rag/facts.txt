@@ -1,0 +1,8 @@
+Dolphins are mammals that breathe air.
+Octopuses have eight arms.
+Bees have six legs.
+The Earth orbits the Sun.
+Water freezes at zero degrees Celsius under standard atmospheric pressure.
+Python is a programming language.
+MongoDB stores documents in collections.
+PostgreSQL stores relational data in tables.

@@ -1,0 +1,1 @@
+"""SoilSync FastAPI backend."""

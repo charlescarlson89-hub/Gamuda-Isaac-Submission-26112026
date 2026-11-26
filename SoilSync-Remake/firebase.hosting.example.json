@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "public": "frontend/dist",
+    "ignore": ["firebase*.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      { "source": "/api/**", "run": { "serviceId": "REPLACE_WITH_DEPLOYED_FASTAPI_SERVICE", "region": "asia-southeast1" } },
+      { "source": "**", "destination": "/index.html" }
+    ],
+    "headers": [{ "source": "**", "headers": [{ "key": "X-Content-Type-Options", "value": "nosniff" }] }]
+  }
+}

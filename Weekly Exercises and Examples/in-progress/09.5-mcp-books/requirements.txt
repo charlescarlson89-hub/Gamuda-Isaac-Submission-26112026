@@ -1,0 +1,7 @@
+langchain
+langchain-google-genai
+langchain-mcp-adapters
+mcp<2
+python-dotenv
+sqlalchemy
+psycopg[binary]

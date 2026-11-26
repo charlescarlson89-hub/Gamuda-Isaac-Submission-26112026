@@ -1,0 +1,452 @@
+/* Linen & Forest app palette. Landing branding remains separately scoped. */
+.final-app,
+.final-welcome {
+  font-family: "DM Sans", Arial, sans-serif;
+  color-scheme: light;
+  --app-bg: #d9e0ce;
+  --app-panel: #e3e8d8;
+  --app-inset: #d1dac3;
+  --app-line: #aebb9f;
+  --app-ink: #33422f;
+  --app-muted: #4f5c47;
+  --app-accent: #405d42;
+  --app-on-accent: #f3f6eb;
+  --app-feature: #c9d4b9;
+  --app-soft: #ccd7bd;
+  --app-track: #b4c3a5;
+  --app-canvas: #c6cfb9;
+  --app-switch-off: #8a987b;
+  --app-switch-thumb: #f1f4e8;
+  --app-danger-bg: #ead8ca;
+  --app-danger-ink: #7d432d;
+  --app-danger-line: #d6bba8;
+  --app-caution-bg: #e4ddc8;
+  --app-caution-ink: #79582f;
+  --app-caution-line: #d7c9a9;
+  --app-shadow: 0 3px 10px #39473712;
+}
+:is(.final-app, .final-welcome) :is(h1, h2, h3, h4, strong, .button, .badge, .brand-tag) {
+  font-family: "DM Sans", Arial, sans-serif;
+}
+.final-app .plant-name-button {
+  min-height: 44px;
+  padding: 6px;
+  display: flex;
+  align-items: flex-start;
+}
+.final-app .plant-name-button > strong {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+/* One track size, with the thumb positioned against its actual inner edges. */
+.final-app .toggle {
+  position: relative;
+  display: block;
+  flex: 0 0 48px;
+  width: 48px;
+  min-width: 48px;
+  max-width: 48px;
+  height: 28px;
+  min-height: 28px;
+  padding: 0;
+  border-radius: 20px;
+  background: var(--app-switch-off);
+  overflow: visible;
+}
+.final-app .toggle::before {
+  content: "";
+  position: absolute;
+  inset: -8px 0;
+}
+.final-app .toggle > i {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  top: 3px;
+  left: 3px;
+  transform: translateX(0);
+  background: var(--app-switch-thumb);
+  pointer-events: none;
+  transition: transform 180ms ease;
+}
+.final-app .toggle.on {
+  background: var(--app-accent);
+}
+.final-app .toggle.on > i {
+  transform: translateX(20px);
+}
+.final-app .preference-row {
+  min-height: 50px;
+}
+.final-app .preference-row > label {
+  color: var(--app-muted);
+}
+.final-app .appearance-panel {
+  padding: 15px;
+  border: 1px solid var(--app-line);
+  border-radius: 6px;
+  background: var(--app-panel);
+}
+.theme-options {
+  display: flex;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  margin: 14px 0 10px;
+  min-width: 0;
+}
+.theme-options legend {
+  font-size: 12px;
+  color: var(--app-muted);
+  margin-bottom: 9px;
+}
+.final-app .theme-options label {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.theme-options input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  padding: 0;
+}
+.theme-options span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 46px;
+  border-radius: 6px;
+  border: 1px solid var(--app-line);
+  background: var(--app-bg);
+  color: var(--app-muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+.theme-options input:checked + span {
+  border-color: var(--app-accent);
+  color: var(--app-accent);
+  box-shadow: inset 0 0 0 1px var(--app-accent);
+}
+.theme-options input:focus-visible + span {
+  outline: 3px solid var(--app-accent);
+  outline-offset: 3px;
+}
+.final-app .appearance-panel > .preview-note {
+  font-size: 11px;
+  margin-top: 10px;
+  color: var(--app-muted);
+}
+
+/* Expanded maintenance rows must use the same theme as their surrounding panel. */
+.final-app .monitoring-panel > div:not(.section-heading):not(.monitor-metrics) {
+  background: var(--app-inset);
+  color: var(--app-ink);
+  border: 1px solid var(--app-line);
+}
+.final-app .monitoring-panel > div > p {
+  color: var(--app-ink);
+}
+.final-app .monitoring-panel > div > svg {
+  color: var(--app-accent);
+  flex-shrink: 0;
+}
+
+/* Linen & Forest uses the same surface hierarchy in both appearances. */
+:root[data-theme="dark"] :is(.final-app, .final-welcome) {
+  color-scheme: dark;
+  --app-bg: #2a332c;
+  --app-panel: #354037;
+  --app-inset: #303e2e;
+  --app-line: #53664e;
+  --app-ink: #e5ebdd;
+  --app-muted: #c0ccb9;
+  --app-accent: #b5ccac;
+  --app-on-accent: #283923;
+  --app-feature: #3e4f3a;
+  --app-soft: #435440;
+  --app-track: #52694b;
+  --app-canvas: #232c25;
+  --app-switch-off: #6e7e65;
+  --app-danger-bg: #503b34;
+  --app-danger-ink: #f1c6b0;
+  --app-danger-line: #8e6a57;
+  --app-caution-bg: #4b4934;
+  --app-caution-ink: #e2d0a2;
+  --app-caution-line: #756b46;
+  --app-shadow: 0 3px 10px #17201818;
+}
+body:has(:is(.final-app, .final-welcome)) {
+  background: #000;
+}
+:is(.final-app, .final-welcome) {
+  --cream: var(--app-bg);
+  --surface: var(--app-panel);
+  --sage: var(--app-inset);
+  --green: var(--app-accent);
+  --brown: var(--app-ink);
+  --lime: var(--app-soft);
+  --muted: var(--app-muted);
+  --border: var(--app-line);
+  --shadow: var(--app-shadow);
+  background: var(--app-bg);
+  color: var(--app-ink);
+  accent-color: var(--app-accent);
+}
+.final-app .app-header { background: var(--app-bg); }
+.final-app .bottom-nav { background: var(--app-panel); border-color: var(--app-line); }
+.final-app .bottom-nav a { color: var(--app-muted); }
+.final-app .bottom-nav a.active { color: var(--app-accent); }
+.final-app .bottom-nav .scan-tab > span {
+  background: var(--app-accent);
+  color: var(--app-on-accent);
+  outline-color: var(--app-bg);
+  box-shadow: var(--app-shadow);
+}
+.final-app .notification-button i { background: var(--app-accent); }
+.final-app .skip-link { background: var(--app-panel); color: var(--app-ink); }
+:is(.final-app, .final-welcome) :is(
+  .panel, .empty-card, .preference-list, .catalog-reward, .redemption-card,
+  .waste-accordion, .tip-card, .weekly-stage, .dialog, .access-card,
+  .plant-carousel article
+) {
+  background: var(--app-panel);
+  border-color: var(--app-line);
+  color: var(--app-ink);
+}
+.final-app :is(
+  .dashboard-batch, .preference-row, .quiet-hours, .settings-links > button,
+  .weekly-stages, .daily-checkin, .claim-code, .tip-card > span,
+  .waste-glyph, .plant-placeholder, .week-symbol, .ingredient-row,
+  .profile-progress, .batch-progress, .progress-ring > div
+),
+.final-welcome :is(.account-tabs, .input-icon) {
+  background: var(--app-inset);
+  border-color: var(--app-line);
+  color: var(--app-ink);
+}
+.final-app .dashboard-batch { background: var(--app-panel); }
+.final-app :is(.dashboard-wallet, .classification-card, .profile-card, .batch-status-card) {
+  background: var(--app-feature);
+  color: var(--app-ink);
+  border: 1px solid var(--app-line);
+  box-shadow: var(--app-shadow);
+}
+.final-app :is(.wallet-leaf, .ingredient-icon) { background: var(--app-soft); color: var(--app-accent); border-color: var(--app-line); }
+.final-app :is(
+  .wallet-greeting h1, .classification-heading h2, .ingredient-row h3,
+  .profile-card-main h2, .batch-status-card .row-between h1, .progress-ring strong,
+  .profile-progress .row-between, .batch-status-meta strong
+) { color: var(--app-ink); }
+.final-app :is(.wallet-amount strong, .confidence-score) { color: var(--app-accent); }
+.final-app :is(.wallet-greeting > a, .classification-heading > svg, .profile-card-main h2 svg) { color: var(--app-accent); }
+.final-app .batch-status-card h1 > svg { color: var(--app-accent); }
+.final-app :is(
+  .wallet-greeting small, .wallet-amount > span, .classification-card > p,
+  .classification-disclaimer, .ingredient-row small, .profile-card-main p,
+  .profile-progress, .profile-progress .row-between:last-child, .batch-status-card > p,
+  .batch-status-meta .row-between, .batch-status-meta p, .progress-ring small,
+  .daily-checkin .row-between > small, .checkin-week > div > span:not(.day-circle)
+) { color: var(--app-muted); }
+.final-app :is(
+  .section-heading h2, .preference-row > label, .quiet-hours,
+  .settings-links strong, .catalog-reward-price > strong, .rewards-wallet,
+  .waste-accordion h2, .recipe-step h3, .monitoring-panel summary,
+  .profile-card-main .text-button, .preference-row > span,
+  .settings-links button > svg:first-child, .tip-card > span, .tip-card strong,
+  .accordion-chevron, .week-lock
+),
+.final-welcome :is(.welcome-brand h1, .access-card h2, .account-tabs button, .forgot-password, .access-card .section-heading > svg, .input-icon svg) {
+  color: var(--app-accent);
+}
+.final-app :is(
+  .dashboard-batch p, .progress-meta, .tip-card p, .plants-panel > p,
+  .caution-panel > p, .recipe-step p, .plant-carousel article > small,
+  .preview-note, .concept-note, .settings-links small, .catalog-reward-copy > small,
+  .catalog-reward-price > small, .reward-section-tabs > a, .section-heading > small,
+  .redemption-card time, .redemption-card-body small, .daily-reward .row-between > strong
+),
+.final-welcome :is(.welcome-footer, .powered-by, .terms-consent) { color: var(--app-muted); }
+.final-app :is(.badge, .analysis-points, .material-category),
+.final-app .batch-status-card > .badge {
+  background: var(--app-soft);
+  color: var(--app-accent);
+  border-color: var(--app-line);
+}
+.final-app .eyebrow i { background: var(--app-accent); }
+:is(.final-app, .final-welcome) :is(input, select, textarea) {
+  background: var(--app-inset);
+  border-color: var(--app-line);
+  color: var(--app-ink);
+}
+:is(.final-app, .final-welcome) :is(input, textarea)::placeholder { color: var(--app-muted); }
+.final-welcome .input-icon input { background: transparent; }
+.final-welcome .account-tabs button.selected { background: var(--app-panel); color: var(--app-accent); }
+.final-welcome .powered-by { border-color: var(--app-line); }
+.final-welcome .welcome-symbol i { background: var(--app-soft); }
+.final-welcome .welcome-symbol b { background: var(--app-accent); }
+:is(.final-app, .final-welcome) :is(button, a, input, select, textarea, summary):focus-visible {
+  outline-color: var(--app-accent);
+}
+:is(.final-app, .final-welcome) :is(.button, .small-button) {
+  background: var(--app-accent);
+  color: var(--app-on-accent);
+}
+.final-app .button-secondary { background: var(--app-soft); color: var(--app-ink); }
+.final-app .waste-page > .button { background: transparent; color: var(--app-accent); }
+:root[data-theme="dark"] .final-app .waste-page :is(.waste-glyph img, .button img) {
+  filter: brightness(0) invert(.85);
+}
+.final-app .toggle { background: var(--app-switch-off); }
+.final-app .toggle.on { background: var(--app-accent); }
+.final-app .toggle > i { background: var(--app-switch-thumb); }
+.final-app .toggle.on > i { background: var(--app-on-accent); }
+.final-app :is(.home-page, .rewards-page) .checkin-week :is(button, .day-circle) {
+  background: var(--app-soft);
+  border-color: var(--app-line);
+  color: var(--app-accent);
+}
+.final-app .day-circle i { background: var(--app-muted); }
+.final-app :is(.home-page, .rewards-page) .checkin-week .day-done { background: var(--app-accent); border-color: var(--app-accent); color: var(--app-on-accent); }
+.final-app :is(.home-page, .rewards-page) .checkin-week .day-today { background: var(--app-soft); border-color: var(--app-accent); color: var(--app-accent); }
+.final-app .daily-reward { background: var(--app-panel); color: var(--app-ink); border-color: var(--app-line); }
+.final-app .catalog-reward:disabled { opacity: 1; background: var(--app-inset); }
+.final-app progress,
+.final-app progress::-webkit-progress-bar { background: var(--app-track); }
+.final-app progress::-webkit-progress-value { background: var(--app-accent); }
+.final-app progress::-moz-progress-bar { background: var(--app-accent); }
+.final-app .progress-ring { background: conic-gradient(var(--app-accent) var(--progress), var(--app-track) 0); }
+.final-app .batch-status-meta { border-color: var(--app-line); }
+.final-app .weekly-stage.current { border-color: var(--app-accent); box-shadow: none; }
+.final-app .weekly-stage.current .week-symbol { background: var(--app-accent); color: var(--app-on-accent); }
+.final-app .week-go { background: var(--app-accent); color: var(--app-on-accent); }
+.final-app .weekly-review { background: var(--app-bg); }
+.final-app .settings-links,
+.final-app .settings-links > button > svg:first-child { background: transparent; }
+.final-app .caution-panel { background: var(--app-caution-bg); }
+.final-app .caution-panel .section-heading h2 { color: var(--app-caution-ink); }
+.final-app :is(.caution-tags span, .waste-category .badge, .waste-category small) {
+  background: var(--app-caution-bg);
+  color: var(--app-caution-ink);
+  border-color: var(--app-caution-line);
+}
+.final-app .waste-accordion:is(:nth-of-type(2), :nth-of-type(3)) .waste-category .badge,
+.final-app .logout-button,
+.final-app .button-danger,
+:is(.final-app, .final-welcome) :is(.inline-error, .storage-alert) {
+  background: var(--app-danger-bg);
+  color: var(--app-danger-ink);
+  border-color: var(--app-danger-line);
+}
+.final-app .toast { background: var(--app-accent); color: var(--app-on-accent); box-shadow: var(--app-shadow); }
+.final-app .leaffy-board .leaffy-message-user { background: var(--app-accent); color: var(--app-on-accent); }
+.final-app .leaffy-board .leaffy-message-user .leaffy-speaker { color: var(--app-on-accent); }
+.final-app .leaffy-board .leaffy-send { background: var(--app-accent); color: var(--app-on-accent); }
+.final-app .analysis-loading { background: var(--app-feature); color: var(--app-ink); }
+.final-app .analysis-loading p { color: var(--app-muted); }
+.final-app .story-handle { color: var(--app-muted); }
+.final-app .story-handle > span { background: var(--app-line); }
+.final-app .photo-toolbar > span { background: var(--app-panel); color: var(--app-ink); border-color: var(--app-line); }
+.final-app .photo-toolbar > button { background: var(--app-accent); color: var(--app-on-accent); border-color: var(--app-accent); }
+.final-app .material-outcome {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 6px;
+  padding: 3px 7px;
+  border: 1px solid var(--app-line);
+  border-radius: 6px;
+  background: var(--app-soft);
+  color: var(--app-accent);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.final-app :is(.material-outcome-rejected, .ingredient-icon-rejected) {
+  background: var(--app-danger-bg);
+  color: var(--app-danger-ink);
+  border-color: var(--app-danger-line);
+}
+.final-app :is(.material-outcome-unknown, .ingredient-icon-unknown) {
+  background: var(--app-caution-bg);
+  color: var(--app-caution-ink);
+  border-color: var(--app-caution-line);
+}
+.final-app .ingredient-row .material-guidance {
+  display: block;
+  margin-top: 5px;
+  color: var(--app-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+@media (prefers-reduced-motion: reduce) {
+  .final-app .toggle > i { transition: none; }
+}
+
+/* Illustrated recipe stages use native details for keyboard and screen-reader access. */
+.final-app .step-guide-hint {
+  margin: 10px 0 16px;
+  color: var(--app-muted);
+  font-size: 14px;
+}
+.final-app .recipe-stage {
+  margin-top: 10px;
+  border: 1px solid var(--app-line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--app-panel);
+}
+.final-app .recipe-stage > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 64px;
+  padding: 14px 12px;
+  color: var(--app-ink);
+  cursor: pointer;
+  list-style: none;
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+.recipe-stage > summary::-webkit-details-marker { display: none; }
+.recipe-stage > summary:focus-visible { outline: 3px solid var(--app-accent); outline-offset: -4px; }
+.final-app .recipe-stage-number {
+  display: grid;
+  place-items: center;
+  flex: 0 0 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--app-inset);
+  color: var(--app-ink);
+  font-size: 14px;
+}
+.recipe-stage-title { flex: 1; }
+.recipe-stage-chevron { flex-shrink: 0; transition: transform 180ms ease; }
+.recipe-stage[open] .recipe-stage-chevron { transform: rotate(180deg); }
+.final-app .recipe-stage-content { padding: 0 14px 14px; color: var(--app-ink); }
+.recipe-stage-content > img { display: block; width: 100%; height: auto; border-radius: 8px; margin-bottom: 16px; }
+.recipe-stage-illustration {
+  aspect-ratio: 5 / 3;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  background-repeat: no-repeat;
+  background-size: 300% 200%;
+}
+.final-app .recipe-stage-content > p { font-size: 16px; line-height: 1.6; color: var(--app-ink); margin: 10px 0; }
+.final-app .recipe-sources { display: flex; flex-wrap: wrap; gap: 8px 12px; font-size: 12px; margin-top: 18px; color: var(--app-muted); }
+.final-app .recipe-sources a { color: var(--app-ink); text-underline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .recipe-stage-chevron { transition: none; } }
+
+.final-app .recipe-method-intro { color: var(--app-ink); font-size: 16px; line-height: 1.6; margin-top: 12px; }
+.final-app .recipe-selector select { min-height: 44px; font-size: 16px; }

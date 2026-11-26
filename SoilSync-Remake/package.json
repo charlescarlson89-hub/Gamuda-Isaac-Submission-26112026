@@ -1,0 +1,29 @@
+{
+  "name": "soilsync-remake",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "dev:setup": "npm run setup && npm run dev",
+    "dev": "node scripts/dev.mjs",
+    "build": "npm --prefix frontend run build",
+    "test": "npm --prefix frontend test",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "node scripts/backend.mjs dev",
+    "test:backend": "node scripts/backend.mjs test",
+    "lint:backend": "node scripts/backend.mjs lint",
+    "db:migrate": "node scripts/backend.mjs migrate",
+    "db:seed": "node scripts/backend.mjs seed",
+    "lint": "npm --prefix frontend run lint",
+    "dev:storage": "node scripts/storage.mjs",
+    "test:live": "node scripts/backend.mjs smoke",
+    "setup:storage:windows": "powershell -NoProfile -File scripts/setup-java.ps1",
+    "build:hosting-demo": "node scripts/backend.mjs hosting-demo",
+    "android:build": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-android.ps1",
+    "android:connect": "node scripts/android-usb.mjs",
+    "account:reset": "node scripts/backend.mjs reset-password"
+  },
+  "devDependencies": {
+    "firebase-tools": "15.34.0"
+  }
+}

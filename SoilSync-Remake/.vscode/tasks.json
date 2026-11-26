@@ -1,0 +1,119 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "SoilSync: Start app + API + Storage",
+      "type": "shell",
+      "command": "npm.cmd",
+      "args": [
+        "run",
+        "dev"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "SoilSync: Start frontend only",
+      "type": "shell",
+      "command": "npm.cmd",
+      "args": [
+        "run",
+        "dev:frontend"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "SoilSync: Start backend only",
+      "type": "shell",
+      "command": "npm.cmd",
+      "args": [
+        "run",
+        "dev:backend"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "SoilSync: Migrate database",
+      "type": "shell",
+      "command": "npm.cmd",
+      "args": [
+        "run",
+        "db:migrate"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "SoilSync: Seed mock data",
+      "type": "shell",
+      "command": "npm.cmd",
+      "args": [
+        "run",
+        "db:seed",
+        "--",
+        "--mock"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "SoilSync: Test backend",
+      "type": "shell",
+      "command": "npm.cmd",
+      "args": [
+        "run",
+        "test:backend"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "SoilSync: Verify live stack",
+      "type": "shell",
+      "command": "npm.cmd",
+      "args": [
+        "run",
+        "test:live"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "SoilSync: Build frontend",
+      "type": "shell",
+      "command": "npm.cmd",
+      "args": [
+        "run",
+        "build"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,355 @@
+// Generated from backend/app/models.py. Paste this entire file into dbdiagram.io.
+// Regenerate without changing SQL migrations: python scripts/export_schema.py --dbml-only
+// This describes the application schema, not an independently verified Neon deployment.
+Project SoilSyncRemake {
+  database_type: 'PostgreSQL'
+  Note: 'SoilSync by TEDA BYTE. FastAPI application schema with 17 tables. PostgreSQL may run locally or on Neon; pgAdmin is the management client. API ownership and AI rules supplement database constraints.'
+}
+
+Table fertilizer_types {
+  id integer [pk, increment, not null]
+  name varchar(100) [not null, unique]
+  description text
+  est_days_to_finish integer [not null, default: 14]
+
+  checks {
+    `est_days_to_finish > 0`
+  }
+
+  Note: 'Shared compost recipe catalogue. Completion days are planning estimates, not proof of maturity.'
+}
+
+Table plants {
+  id integer [pk, increment, not null]
+  name varchar(100) [not null, unique]
+  plant_type varchar(80) [not null]
+  growth_stage varchar(50) [not null]
+
+  Note: 'Shared plant catalogue used by recipe guidance.'
+}
+
+Table rewards {
+  id integer [pk, increment, not null]
+  slug varchar(60) [not null, unique]
+  title varchar(100) [not null]
+  description text [not null]
+  points_cost integer [not null]
+  category varchar(80) [not null]
+  kind varchar(30) [not null]
+  is_active boolean [not null, default: true]
+  prototype_only boolean [not null, default: true]
+  created_at timestamptz [not null, default: `now()`]
+
+  checks {
+    `points_cost > 0`
+  }
+
+  Note: 'Reward catalogue. Current partner items are prototype concepts; physical fulfilment is not implemented.'
+}
+
+Table users {
+  id integer [pk, increment, not null]
+  username varchar(40) [not null]
+  email varchar(254) [not null]
+  password varchar(255) [not null, note: 'Argon2 password hash, never plaintext.']
+  location varchar(80) [not null]
+  points_balance integer [not null, default: 0]
+  streak_days integer [not null, default: 0]
+  tier varchar(60) [not null, default: 'Tier 1: Beginner']
+  terms_version varchar(30) [not null]
+  consented_at timestamptz [not null, note: 'UTC-aware timestamp supplied by the application; no database-side default.']
+  created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (`lower(email)`) [unique, name: 'users_email_unique']
+    (`lower(username)`) [unique, name: 'users_username_unique']
+  }
+
+  checks {
+    `points_balance >= 0` [name: 'users_nonnegative_points']
+    `streak_days >= 0` [name: 'users_nonnegative_streak']
+  }
+
+  Note: 'Registered accounts, consent and current EcoPoints balance. Admin access is configured outside the database.'
+}
+
+Table waste_types {
+  id integer [pk, increment, not null]
+  name varchar(100) [not null, unique]
+  category varchar(80) [not null]
+  is_supported boolean [not null, default: true]
+  rejection_reason varchar(150)
+  guide_recommendation text
+
+  Note: 'Shared waste catalogue. The seeded Banana peels record has ID 1.'
+}
+
+Table auth_sessions {
+  id integer [pk, increment, not null]
+  user_id integer [not null]
+  token_hash varchar(64) [not null, unique]
+  expires_at timestamptz [not null]
+  created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (user_id) [name: 'ix_auth_sessions_user_id']
+  }
+
+  Note: 'Revocable login sessions. Store only a SHA-256 token digest, never the raw session token.'
+}
+
+Table batches {
+  id integer [pk, increment, not null]
+  user_id integer [not null]
+  fertilizer_type_id integer [not null]
+  batch_number varchar(80) [not null]
+  name varchar(60) [not null]
+  client_request_id varchar(36) [not null]
+  status varchar(20) [not null, default: 'Active']
+  percentage_completed integer [not null, default: 0]
+  started_at timestamptz [not null, default: `now()`]
+  est_completion_date date
+
+  indexes {
+    (user_id, client_request_id) [unique]
+    (user_id) [name: 'ix_batches_user_id']
+  }
+
+  checks {
+    `(status = 'Completed') = (percentage_completed = 100)`
+    `percentage_completed IN (0, 33, 67, 100)`
+    `status IN ('Active', 'Fermenting', 'Completed')`
+  }
+
+  Note: 'Multiple batches per user. Progress measures three approved check-ins, not compost maturity.'
+}
+
+Table daily_checkins {
+  id integer [pk, increment, not null]
+  user_id integer [not null]
+  checkin_date date [not null]
+  points_awarded integer [not null, default: 10]
+  created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (user_id, checkin_date) [unique]
+    (user_id) [name: 'ix_daily_checkins_user_id']
+  }
+
+  checks {
+    `points_awarded = 10`
+  }
+
+  Note: 'One daily check-in per user and Kuala Lumpur calendar date.'
+}
+
+Table fertilizer_maintenance_guides {
+  id integer [pk, increment, not null]
+  fertilizer_type_id integer [not null, unique]
+  check_cadence varchar(100) [not null]
+  optimal_temp varchar(150) [not null]
+  moisture_range varchar(150) [not null]
+
+  Note: 'At most one maintenance guide per recipe. Temperature and moisture are guidance, not camera measurements.'
+}
+
+Table fertilizer_recipe_steps {
+  id integer [pk, increment, not null]
+  fertilizer_type_id integer [not null]
+  step_number integer [not null]
+  instruction text [not null]
+
+  indexes {
+    (fertilizer_type_id, step_number) [unique]
+  }
+
+  checks {
+    `step_number > 0`
+  }
+
+  Note: 'Ordered instructions for a recipe.'
+}
+
+Table fertilizer_suitable_plants {
+  id integer [pk, increment, not null]
+  fertilizer_type_id integer [not null]
+  plant_id integer [not null]
+  is_recommended boolean [not null, default: true]
+  notes varchar(250)
+
+  indexes {
+    (fertilizer_type_id, plant_id) [unique]
+  }
+
+  Note: 'Recipe-to-plant guidance. is_recommended=false marks an avoid relationship.'
+}
+
+Table points_ledger {
+  id integer [pk, increment, not null]
+  user_id integer [not null]
+  event_key varchar(120) [not null, unique]
+  points integer [not null, note: 'Positive for earnings, negative for spending. Amounts are controlled by FastAPI.']
+  reason varchar(150) [not null]
+  created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (user_id) [name: 'ix_points_ledger_user_id']
+  }
+
+  checks {
+    `points <> 0`
+  }
+
+  Note: 'Append-only API accounting events. Unique event keys prevent duplicate point awards and debits.'
+}
+
+Table reward_claims {
+  id integer [pk, increment, not null]
+  user_id integer [not null]
+  reward_id integer [not null]
+  request_id varchar(36) [not null]
+  claim_code varchar(50) [not null, unique]
+  points_spent integer [not null]
+  is_redeemed boolean [not null, default: false]
+  claimed_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (user_id, request_id) [unique]
+    (user_id, reward_id) [unique]
+    (user_id) [name: 'ix_reward_claims_user_id']
+  }
+
+  checks {
+    `points_spent > 0`
+  }
+
+  Note: 'Claim records with debit snapshots. FastAPI checks the balance and saves the debit and claim in one transaction.'
+}
+
+Table scan_logs {
+  id integer [pk, increment, not null]
+  user_id integer [not null]
+  waste_type_id integer
+  points_earned integer [not null, default: 50]
+  image_sha256 varchar(64) [not null, note: 'SHA-256 of the original scan file for per-user duplicate protection.']
+  provider varchar(30) [not null, note: 'The application default is gemini; there is no database-side default.']
+  model_name varchar(100) [not null]
+  result jsonb [not null, note: 'Structured AI result including detected items, confidence and catalogue matches.']
+  scanned_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (user_id, image_sha256) [unique]
+    (user_id) [name: 'ix_scan_logs_user_id']
+  }
+
+  checks {
+    `points_earned IN (0, 50)`
+  }
+
+  Note: 'AI scan results and image hashes. A null waste_type_id represents an unmatched scan. Full item detections are stored in result.'
+}
+
+Table user_settings {
+  id integer [pk, increment, not null]
+  user_id integer [not null, unique]
+  checkin_reminder boolean [not null, default: true]
+  reward_received_notify boolean [not null, default: true]
+  service_notices_notify boolean [not null, default: true]
+  claim_reward_reminder boolean [not null, default: true]
+  quiet_hours_start varchar(5) [not null, default: '22:00']
+  quiet_hours_end varchar(5) [not null, default: '07:00']
+
+  Note: 'At most one preferences record per account.'
+}
+
+Table waste_fertilizer_matches {
+  id integer [pk, increment, not null]
+  waste_type_id integer [not null]
+  fertilizer_type_id integer [not null]
+
+  indexes {
+    (waste_type_id, fertilizer_type_id) [unique]
+  }
+
+  Note: 'Many-to-many mapping between supported waste materials and compost recipes.'
+}
+
+Table weekly_checkin_quests {
+  id integer [pk, increment, not null]
+  batch_id integer [not null]
+  week_number integer [not null]
+  status varchar(10) [not null, default: 'UPCOMING']
+  points_reward integer [not null, default: 100]
+  completed_at timestamptz
+  image_proof_url varchar(500)
+  storage_key varchar(300) [note: 'Private storage object reference; image_proof_url is served through an ownership-checked API.']
+  photo_data bytea [note: 'Optional private JPEG bytes for hosted PostgreSQL storage. Never included in JSON responses; served only through the ownership-checked photo endpoint.']
+  image_sha256 varchar(64) [note: 'SHA-256 of the normalised proof image. The API also checks reuse across this user\'s batches.']
+  verification jsonb [note: 'Visual compost approval evidence; nullable for legacy/mock proof. Not maturity certification.']
+  note varchar(250) [not null, default: '']
+
+  indexes {
+    (batch_id, image_sha256) [unique, name: 'uq_weekly_batch_image']
+    (batch_id, week_number) [unique]
+    (batch_id) [name: 'ix_weekly_checkin_quests_batch_id']
+  }
+
+  checks {
+    `points_reward = 100`
+    `status <> 'DONE' OR (completed_at IS NOT NULL AND image_proof_url IS NOT NULL)`
+    `status IN ('UPCOMING', 'CURRENT', 'DONE')`
+    `week_number BETWEEN 1 AND 3`
+  }
+
+  Note: 'Three ordered photo quests per batch. FastAPI checks ownership, AI approval and photo reuse across the account. No seven-day waiting period is enforced.'
+}
+
+Ref: auth_sessions.user_id > users.id [delete: cascade]
+Ref: batches.user_id > users.id [delete: cascade]
+Ref: batches.fertilizer_type_id > fertilizer_types.id
+Ref: daily_checkins.user_id > users.id [delete: cascade]
+Ref: fertilizer_types.id - fertilizer_maintenance_guides.fertilizer_type_id [delete: cascade]
+Ref: fertilizer_recipe_steps.fertilizer_type_id > fertilizer_types.id [delete: cascade]
+Ref: fertilizer_suitable_plants.fertilizer_type_id > fertilizer_types.id [delete: cascade]
+Ref: fertilizer_suitable_plants.plant_id > plants.id [delete: cascade]
+Ref: points_ledger.user_id > users.id [delete: cascade]
+Ref: reward_claims.user_id > users.id [delete: cascade]
+Ref: reward_claims.reward_id > rewards.id
+Ref: scan_logs.user_id > users.id [delete: cascade]
+Ref: scan_logs.waste_type_id > waste_types.id
+Ref: users.id - user_settings.user_id [delete: cascade]
+Ref: waste_fertilizer_matches.waste_type_id > waste_types.id [delete: cascade]
+Ref: waste_fertilizer_matches.fertilizer_type_id > fertilizer_types.id [delete: cascade]
+Ref: weekly_checkin_quests.batch_id > batches.id [delete: cascade]
+
+TableGroup Accounts {
+  users
+  user_settings
+  auth_sessions
+  daily_checkins
+}
+
+TableGroup Waste_and_AI {
+  waste_types
+  scan_logs
+}
+
+TableGroup Recipes_and_plants {
+  fertilizer_types
+  waste_fertilizer_matches
+  plants
+  fertilizer_suitable_plants
+  fertilizer_recipe_steps
+  fertilizer_maintenance_guides
+}
+
+TableGroup Batch_progress {
+  batches
+  weekly_checkin_quests
+}
+
+TableGroup Rewards_and_points {
+  rewards
+  reward_claims
+  points_ledger
+}

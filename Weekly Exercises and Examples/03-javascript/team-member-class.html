@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TeamMember Class and Recursion</title>
+</head>
+<body>
+    <script>
+        const rawTeamData = [
+          {
+            id: 1,
+            firstName: "Steve",
+            lastName: "Liam",
+            hobbies: ["Reading", "Music"],
+            favouriteFoods: ["Pizza"],
+            pets: ["Cat"],
+          },
+          {
+            id: 2,
+            firstName: "Emily",
+            lastName: "Rose",
+            hobbies: ["Painting", "Hiking"],
+            favouriteFoods: ["Pasta", "Salad"],
+            pets: ["Dog", "Bird"],
+          },
+          {
+            id: 3,
+            firstName: "David",
+            lastName: "Miller",
+            hobbies: ["Gaming"],
+            favouriteFoods: ["Burger", "Fries"],
+            pets: [],
+          },
+          {
+            id: 4,
+            firstName: "Jessica",
+            lastName: "Brown",
+            hobbies: ["Cooking", "Gardening", "Music"],
+            favouriteFoods: ["Sushi", "Steak"],
+            pets: ["Rabbit"],
+          },
+          {
+            id: 5,
+            firstName: "Michael",
+            lastName: "Davis",
+            hobbies: ["Photography", "Hiking"],
+            favouriteFoods: ["Tacos"],
+            pets: ["Hamster", "Dog"],
+          },
+          {
+            id: 6,
+            firstName: "Olivia",
+            lastName: "Wilson",
+            hobbies: ["Yoga", "Writing", "Music"],
+            favouriteFoods: ["Soup", "Sandwich"],
+            pets: ["Fish"],
+          },
+        ];
+        console.log("--- Setup Complete ---");
+        console.log("\n--- The OOP Foundation ---");
+        class TeamMember {
+          constructor(data) {
+            this._id = data.id;
+            this._firstName = data.firstName;
+            this._lastName = data.lastName;
+            this._hobbies = [...data.hobbies];
+            this._favouriteFoods = [...data.favouriteFoods];
+            this._pets = [...data.pets];
+          }
+          fullName() {
+            return `${this._lastName}, ${this._firstName}`;
+          }
+          hasHobby(hobby) {
+            return this._hobbies.includes(hobby);
+          }
+          get pets() {
+            return this._pets;
+          }
+          addPet(petName) {
+            if (!this._pets.includes(petName)) {
+              this._pets.push(petName);
+              console.log(
+                `${this._firstName} ${this._lastName} now has a new pet: ${petName}`
+              );
+            } else {
+              console.log(
+                `${this._firstName} ${this._lastName} already has a ${petName}.`
+              );
+            }
+          }
+          getSummary() {
+            const hobbyCount = this._hobbies.length;
+            const petCount = this.pets.length;
+            return `${this._firstName} ${this._lastName} has ${hobbyCount} hobbies and ${petCount} pet(s).`;
+          }
+          clearPetsRecursive() {
+            // Base case: If the pets array is empty, stop.
+            if (this.pets.length === 0) {
+              console.log(`${this._firstName}'s pets array is now empty.`);
+              return;
+            }
+            // Recursive step: Remove one pet and call the function again.
+            this.pets.pop(); // Removes the last element
+            this.clearPetsRecursive(); // Recurse
+          }
+        }
+        // Instantiate Team Members
+        const teamMemberInstances = rawTeamData.map((data) => new TeamMember(data));
+        console.log(`Created ${teamMemberInstances.length} TeamMember instances.`);
+        // Checks
+        console.log("Member 1 Full Name:", teamMemberInstances[0].fullName());
+        console.log("Member 2 Summary:", teamMemberInstances[1].getSummary());
+        // Add pet
+        teamMemberInstances[2].addPet("Snake");
+        console.log("Member 3 Pets after addPet:", teamMemberInstances[2].pets);
+
+        teamMemberInstances[1].clearPetsRecursive();
+        console.log("Member 2 Pets after clearing:", teamMemberInstances[1].pets);
+    </script>
+</body>
+</html>

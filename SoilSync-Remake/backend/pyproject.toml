@@ -1,0 +1,35 @@
+[project]
+name = "soilsync-api"
+version = "0.2.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi==0.150.0",
+    "uvicorn[standard]==0.54.0",
+    "pydantic==2.14.1",
+    "pydantic-settings==2.16.0",
+    "SQLAlchemy==2.1.5",
+    "psycopg2-binary==2.9.13",
+    "pwdlib[argon2]==0.3.1",
+    "python-multipart==0.0.32",
+    "google-genai==2.31.0",
+    "firebase-admin==7.7.0",
+    "Pillow==12.3.0",
+    "alembic==1.20.0",
+    "pymongo==4.19.0",
+    "cryptography==50.0.2",
+]
+
+[tool.vercel]
+entrypoint = "app.main:app"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+ignore = ["E501"]

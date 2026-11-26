@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team Member Functions</title>
+</head>
+<body>
+    <script>
+        let teamMember1 = {
+          firstName: "Alice",
+          lastName: "Johnson",
+          hobbies: ["Reading", "Hiking", "Coding"],
+          favoriteFoods: ["Pizza", "Sushi", "Chocolate"],
+          pets: ["Dog", "Cat"]
+        };
+        let teamMember2 = {
+          firstName: "Bob",
+          lastName: "Smith",
+          hobbies: ["Gaming", "Photography"],
+          favoriteFoods: ["Burgers", "Pasta"],
+          pets: []
+        };
+        let teamMember3 = {
+          firstName: "Charlie",
+          lastName: "Brown",
+          hobbies: ["Drawing", "Music", "Cooking"],
+          favoriteFoods: ["Tacos", "Ice Cream"],
+          pets: ["Parrot"]
+        };
+        function getFullName(member) {
+          if (!member || !member.firstName || !member.lastName) {
+            return "Invalid member data";
+          }
+          return `${member.firstName} ${member.lastName}`;
+        }
+        function countFullNameVowels(member) {
+          const fullName = getFullName(member).toLowerCase();
+          const vowels = "aeiou";
+          let vowelCount = 0;
+          for (let i = 0; i < fullName.length; i++) {
+            if (vowels.includes(fullName[i])) {
+              vowelCount++;
+            }
+          }
+          return vowelCount;
+        }
+        function isFoodLover(member) {
+          if (!member || !Array.isArray(member.favoriteFoods)) {
+            return false;
+          }
+          return member.favoriteFoods.length > 1;
+        }
+        function isPetKeeper(member) {
+          if (!member || !Array.isArray(member.pets)) {
+            return false;
+          }
+          return member.pets.length > 1;
+        }
+        console.log("--- Team Member 1: Alice Johnson ---");
+        console.log("Full Name:", getFullName(teamMember1));
+        console.log("Vowel Count:", countFullNameVowels(teamMember1));
+        console.log("Is Food Lover (>1 food):", isFoodLover(teamMember1));
+        console.log("Is Pet Keeper (>1 pet):", isPetKeeper(teamMember1));
+
+        for (const member of [teamMember2, teamMember3]) {
+          console.log("Full Name:", getFullName(member));
+          console.log("Vowel Count:", countFullNameVowels(member));
+          console.log("Is Food Lover (>1 food):", isFoodLover(member));
+          console.log("Is Pet Keeper (>1 pet):", isPetKeeper(member));
+        }
+    </script>
+</body>
+</html>
